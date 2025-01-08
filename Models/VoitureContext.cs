@@ -16,9 +16,9 @@ namespace EMG_MED1000_BACKEND.Models
         }
 
         //entitées
-        private DbSet<Voiture> Voitures;
-        private DbSet<Marque> Marques;
-        private DbSet<Modele> Modeles;
+        public DbSet<Voiture> Voitures;
+        public DbSet<Marque> Marques;
+        public DbSet<Modele> Modeles;
 
         //Implémentation de la méthode OnConfiguring (...) permettant l'import des configs de notre base de données
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
