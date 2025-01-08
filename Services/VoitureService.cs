@@ -22,5 +22,21 @@ public class VoitureService
 
         return voiture;
     }
+
+    //Méthode pour supprimer une voiture
+    public async Task DeleteVoiture(int id)
+    {
+        //Pour supprimer une voiture, on aura besoin de son id pour le retirer de la base de données
+        //Ici, on vérifie si l'id fournie de la voiture existe rééllement dans la table de la base de données 
+        var voiture = await _context.Voitures.FindAsync(id);
+        if (voiture == null)
+            throw new KeyNotFoundException("Voiture introuvable");
+
+        //Suppression de l'entité voiture au _context
+        _context.Voitures.Remove(voiture);
+
+        //Sauvegarde de l'entité dans la base de données
+        await _context.SaveChangesAsync();
+    }
 }
 
