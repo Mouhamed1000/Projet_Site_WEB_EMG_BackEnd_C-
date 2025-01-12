@@ -1,5 +1,6 @@
 using EMG_MED1000_BACKEND.Entities;
 using EMG_MED1000_BACKEND.Models;
+using Microsoft.EntityFrameworkCore;
 
 public class VoitureService
 {
@@ -35,8 +36,14 @@ public class VoitureService
         //Suppression de l'entité voiture au _context
         _context.Voitures.Remove(voiture);
 
-        //Sauvegarde de l'entité dans la base de données
+        //Sauvegarde des changements dans la base de données
         await _context.SaveChangesAsync();
+    }
+
+    //Méthode pour obtenir toutes les voitures
+    public async Task<List<Voiture>> GetAllVoituresAsync()
+    {
+        return await _context.Voitures.ToListAsync();
     }
 }
 

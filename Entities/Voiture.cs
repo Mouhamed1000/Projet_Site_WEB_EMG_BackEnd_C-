@@ -16,8 +16,8 @@ namespace EMG_MED1000_BACKEND.Entities
 
         //Une voiture possede ses marques et à ses marques est rattachées ses modèles
         //Propriétés de navigation
-        private Marque marque { get; set; } 
-        private Modele modele { get; set; }
+        public Marque marque { get; set; } 
+        public Modele modele { get; set; }
 
     }
 
