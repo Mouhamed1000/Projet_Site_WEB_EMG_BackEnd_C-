@@ -11,7 +11,7 @@ namespace EMG_MED1000_BACKEND.Entities
         private int MarqueId { get; set; }
 
         //Propriété de navigation 
-        private Marque Marque { get; set; }
+        public Marque Marque { get; set; }
 
     }
 }
