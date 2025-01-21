@@ -24,6 +24,27 @@ public class MarqueService
         return marque;
     }
 
+    //Méthode pour modifier une marque
+    public async Task<Marque> UpdateMarque(int id, Marque updatedMarque)
+    {
+        //Une fois que l'id est renseigné, on recherche l'id dans la table de la base de données
+        var marque = await _context.Marques.FindAsync(id);
+        if (marque == null)
+        {
+            return null;
+        }
+
+        //Si la marque existe, on met à jour les propriétés
+        marque.NomMarq = updatedMarque.NomMarq;
+        marque.ListModele = updatedMarque.ListModele;
+
+        //Ensuite, on sauvegarde les changements
+        await _context.SaveChangesAsync();
+
+        return marque;
+    }
+
+
     //Méthode pour supprimer une marque
     public async Task DeleteMarque(int id)
     {

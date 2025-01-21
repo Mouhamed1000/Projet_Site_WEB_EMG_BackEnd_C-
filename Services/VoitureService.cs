@@ -62,6 +62,27 @@ public class VoitureService
         return voiture;
     }
 
+    //Méthode pour modifier une voiture
+    public async Task<Voiture> UpdateVoiture(int id, Voiture updatedVoiture)
+    {
+        //Une fois qu'un id est donné, on recherche l'id dans la table de la base de données
+        var voiture = await _context.Voitures.FindAsync(id);
+        if (voiture == null)
+        {
+            return null;
+        }
+
+        //Si la voiture existe, on met à jour ses propriétés
+        voiture.statutVoiture = updatedVoiture.statutVoiture;
+        voiture.photoVoiture = updatedVoiture.photoVoiture;
+        voiture.descrVoiture = updatedVoiture.descrVoiture;
+        voiture.anneeVoiture = updatedVoiture.anneeVoiture;
+        voiture.MarqId = updatedVoiture.MarqId;
+
+        await _context.SaveChangesAsync();
+        return voiture;
+    }
+
     //Méthode pour supprimer une voiture
     public async Task<bool> DeleteVoiture(int id)
     {

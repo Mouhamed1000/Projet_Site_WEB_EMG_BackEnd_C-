@@ -3,15 +3,34 @@ namespace EMG_MED1000_BACKEND.Entities
     public class Modele
     {
         private int ModeleId { get; set; }
-        private String NomModele { get; set; }
-        private DateTime AnneeModele { get; set; }
+        private String NomModele;
+        private DateTime AnneeModele;
 
         //Pour une marque donnée d'une voiture, il doit être disponible ses modèles
         //Donc dans l'entité Modele, il y'aura l'id de la marque qui est une clé étrangère
-        private int MarqueId { get; set; }
+        private int MarqueId;
 
         //Propriété de navigation 
         public Marque Marque { get; set; }
+
+        //Définition des getters et setters
+        public String nomModele
+        {
+            get { return NomModele; }
+            set { NomModele= value; }
+        }
+
+        public DateTime anneeModele
+        {
+            get { return AnneeModele; }
+            set { AnneeModele = value; }
+        }
+
+        public int MarqId
+        {
+            get { return MarqueId; }
+            set { MarqueId = value; }
+        }
 
     }
 }

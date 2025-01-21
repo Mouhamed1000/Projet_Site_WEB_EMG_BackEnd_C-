@@ -4,14 +4,14 @@ namespace EMG_MED1000_BACKEND.Entities
     public class Voiture
     {
         //Définition des propriétés relatives à Voiture
-        private int VoitureId { get; set; }
-        private StatutVoiture statut { get; set; }
-        private String photo { get; set; }
-        private String description { get; set; }
-        private DateTime AnneeVoiture { get; set; }
+        private int VoitureId;
+        private StatutVoiture statut;
+        private String photo;
+        private String description;
+        private DateTime AnneeVoiture;
 
         //Clés étrangères vers Marque et Modele
-        private int MarqueId { get; set; }
+        private int MarqueId;
 
         //Une voiture possede ses marques et à ses marques est rattachées ses modèles
         //Propriétés de navigation
@@ -25,6 +25,43 @@ namespace EMG_MED1000_BACKEND.Entities
             description = _description;
             AnneeVoiture = _AnneeVoiture;
             MarqueId = _MarqueId;
+        }
+
+        //Déclaration des getters et setters
+        public int VoitId
+        {
+            get { return VoitureId; }
+            set { VoitureId = value; }
+        }
+
+        public StatutVoiture statutVoiture
+        {
+            get { return statut; }
+            set { statut = value; }
+        }
+
+        public string photoVoiture
+        {
+            get { return photo; }
+            set { photo = value; }
+        }
+
+        public string descrVoiture
+        {
+            get { return description; }
+            set { description = value; }
+        }
+
+        public DateTime anneeVoiture
+        {
+            get { return AnneeVoiture; }
+            set { AnneeVoiture = value; }
+        }
+
+        public int MarqId 
+        {
+            get { return MarqueId; }
+            set { MarqueId = value; }
         }
 
     }
