@@ -13,6 +13,15 @@ namespace EMG_MED1000_BACKEND.Entities
         //Propriété de navigation 
         public Marque Marque { get; set; }
 
+        //Déclaration d'un constructeur de la classe pour y initaliser notre objet Modele
+        public Modele (String _NomModele, DateTime _AnneeModele, int marqueId)
+        {
+            NomModele = _NomModele;
+            AnneeModele = _AnneeModele;
+            MarqueId = marqueId;
+        }
+
+
         //Définition des getters et setters
         public String nomModele
         {

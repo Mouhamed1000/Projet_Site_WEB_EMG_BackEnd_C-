@@ -13,8 +13,11 @@ public class MarqueService
     }
 
     //Méthode pour créer une marque
-    public async Task<Marque> CreateMarque(Marque marque)
+    public async Task<Marque> CreateMarque(String _NomMarque, List<Modele> _Modeles)
     {
+        //On utilise le constructeur Marque(...) pour initialiser notre objet Marque
+        var marque = new Marque(_NomMarque, _Modeles);
+
         //Ajout de l'entité marque au _context
         _context.Marques.Add(marque);
 
@@ -46,7 +49,7 @@ public class MarqueService
 
 
     //Méthode pour supprimer une marque
-    public async Task DeleteMarque(int id)
+    public async Task<bool> DeleteMarque(int id)
     {
         //Pour supprimer une marque, on aura besoin de son id
         var marque = await _context.Marques.FindAsync(id);
@@ -58,6 +61,14 @@ public class MarqueService
 
         //Sauvegarde des changements dans la base de données
         await _context.SaveChangesAsync();
+
+        return true;
+    }
+
+    //Méthode pour obtenir toutes les marques
+    public async Task<List<Marque>> GetAllMarquesAsync()
+    {
+        return await _context.Marques.ToListAsync();
     }
    
 }

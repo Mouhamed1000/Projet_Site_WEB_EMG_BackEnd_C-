@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EMG_Med1000_backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16a1fc63e46bd726b966c9ccf09653b732570188")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e8650eaf70562706c480e19fd09928cdc406f80b")]
 [assembly: System.Reflection.AssemblyProductAttribute("EMG_Med1000_backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EMG_Med1000_backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
