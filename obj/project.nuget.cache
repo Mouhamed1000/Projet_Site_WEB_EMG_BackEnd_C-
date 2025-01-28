@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ZUPOJ0Z5k0C4+oBYo0DVzPz0yxL1mjP4xVtkvUKgsbBvGzl24Puq4+lhxxKwLRk2+tcxf8YYtFkilKWxgzdXHw==",
+  "dgSpecHash": "cnpGIYUCgmKqwhHjiMkw0lY9mTqIoaqcQMOv2UgWQBU1gm4Hh6Z2pVtyort5SmAkjNGUM4OURarBzzxO6Hvneg==",
   "success": true,
   "projectFilePath": "/home/mouhamed/Documents/M2G/_.NET/Projet_EMG/backend/EMG_Med1000_backend/EMG_Med1000_backend.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "/home/mouhamed/.nuget/packages/k4os.compression.lz4/1.3.8/k4os.compression.lz4.1.3.8.nupkg.sha512",
     "/home/mouhamed/.nuget/packages/k4os.compression.lz4.streams/1.3.8/k4os.compression.lz4.streams.1.3.8.nupkg.sha512",
     "/home/mouhamed/.nuget/packages/k4os.hash.xxhash/1.0.8/k4os.hash.xxhash.1.0.8.nupkg.sha512",
+    "/home/mouhamed/.nuget/packages/microsoft.aspnetcore.identity.ui/9.0.1/microsoft.aspnetcore.identity.ui.9.0.1.nupkg.sha512",
     "/home/mouhamed/.nuget/packages/microsoft.entityframeworkcore/8.0.8/microsoft.entityframeworkcore.8.0.8.nupkg.sha512",
     "/home/mouhamed/.nuget/packages/microsoft.entityframeworkcore.abstractions/8.0.8/microsoft.entityframeworkcore.abstractions.8.0.8.nupkg.sha512",
     "/home/mouhamed/.nuget/packages/microsoft.entityframeworkcore.analyzers/8.0.8/microsoft.entityframeworkcore.analyzers.8.0.8.nupkg.sha512",
