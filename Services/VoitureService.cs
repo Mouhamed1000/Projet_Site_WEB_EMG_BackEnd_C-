@@ -107,7 +107,10 @@ public class VoitureService
     //Méthode pour obtenir toutes les voitures
     public async Task<List<Voiture>> GetAllVoituresAsync()
     {
-        return await _context.Voitures.ToListAsync();
+        //On envoie aussi la marque et modele pour chaque voiture ici
+        return await _context.Voitures  .Include(m => m.marque)
+                                        .ThenInclude(v => v.modele)
+                                        .ToListAsync();
     }
 }
 
