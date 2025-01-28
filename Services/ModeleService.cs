@@ -28,23 +28,26 @@ public class ModeleService
     }
 
     //Méthode pour modifier un modele
-    public async Task<Modele> UpdateModele(int id, Modele updatedModele)
+    public async Task<bool> UpdateModele(int id, String _NomModele, DateTime _AnneeModele, int marqueId)
     {
         //On vérifie l'id renseigné au niveau de notre table de la base de données
         var modele = await _context.Modeles.FindAsync(id);
         //On s'assure que l'id existe dans notre table de la base de données 
         if (modele == null)
         {
-            return null;
+            return false;
         }
 
-        modele.nomModele = updatedModele.nomModele;
-        modele.anneeModele = updatedModele.anneeModele;
-        modele.MarqId = updatedModele.MarqId;
+        modele.nomModele = _NomModele;
+        modele.anneeModele = _AnneeModele;
+        modele.MarqId = marqueId;
+
+        //Ici, on met à jour la table via le _context
+        _context.Modeles.Update(modele);
 
         //Ensuite on sauvegarde les changements
         await _context.SaveChangesAsync();
-        return modele;
+        return true;
     }
 
     //Méthode pour supprimer un modele

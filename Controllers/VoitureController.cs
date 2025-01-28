@@ -37,6 +37,20 @@ public class VoitureController : ControllerBase
         return StatusCode(201, createdVoiture);
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateVoiture(int id, [FromBody] Voiture voiture)
+    {
+        if (voiture == null || id <=0)
+            return BadRequest("Les données sont invalides");
+
+        var success = await _voitureService.UpdateVoiture(id, voiture.statutVoiture, voiture.photoVoiture, voiture.descrVoiture, voiture.anneeVoiture, voiture.MarqId);
+        
+        if (!success)
+            return NotFound($"Aucune voiture trouvée avec l'ID {id}");
+
+        return NoContent();
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteVoiture(int id)
     {

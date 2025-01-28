@@ -37,6 +37,20 @@ public class ModeleController : ControllerBase
         return StatusCode(201, createdModele);
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateModele(int id, [FromBody] Modele modele)
+    {
+        if (modele == null || id <=0)
+            return BadRequest("Les données sont invalides");
+
+        var success = await _modeleService.UpdateModele(id, modele.nomModele, modele.anneeModele, modele.MarqId);
+        
+        if (!success)
+            return NotFound($"Aucun modele trouvé avec l'ID {id}");
+
+        return NoContent();
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteModele(int id)
     {

@@ -32,6 +32,21 @@ public class MarqueController : ControllerBase
         return StatusCode(201, createdMarque);
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateMarque(int id, [FromBody] Marque marque)
+    {
+        if (marque == null || id <=0)
+            return BadRequest("Les données sont invalides");
+
+        var success = await _marqueService.UpdateMarque(id, marque.NomMarq, marque.ListModele);
+        
+        if (!success)
+            return NotFound($"Aucune marque trouvée avec l'ID {id}");
+
+        return NoContent();
+    }
+
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteMarque(int id)
     {
