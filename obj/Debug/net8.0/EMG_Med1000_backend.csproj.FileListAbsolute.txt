@@ -1,0 +1,7 @@
+/home/mouhamed/Documents/M2G/_.NET/Projet_EMG/backend/EMG_Med1000_backend/obj/Debug/net8.0/EMG_Med1000_backend.csproj.AssemblyReference.cache
+/home/mouhamed/Documents/M2G/_.NET/Projet_EMG/backend/EMG_Med1000_backend/obj/Debug/net8.0/EMG_Med1000_backend.GeneratedMSBuildEditorConfig.editorconfig
+/home/mouhamed/Documents/M2G/_.NET/Projet_EMG/backend/EMG_Med1000_backend/obj/Debug/net8.0/EMG_Med1000_backend.AssemblyInfoInputs.cache
+/home/mouhamed/Documents/M2G/_.NET/Projet_EMG/backend/EMG_Med1000_backend/obj/Debug/net8.0/EMG_Med1000_backend.AssemblyInfo.cs
+/home/mouhamed/Documents/M2G/_.NET/Projet_EMG/backend/EMG_Med1000_backend/obj/Debug/net8.0/EMG_Med1000_backend.csproj.CoreCompileInputs.cache
+/home/mouhamed/Documents/M2G/_.NET/Projet_EMG/backend/EMG_Med1000_backend/obj/Debug/net8.0/EMG_Med1000_backend.MvcApplicationPartsAssemblyInfo.cache
+/home/mouhamed/Documents/M2G/_.NET/Projet_EMG/backend/EMG_Med1000_backend/obj/Debug/net8.0/EMG_Med1000_backend.sourcelink.json

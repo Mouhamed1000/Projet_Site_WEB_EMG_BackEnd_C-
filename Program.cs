@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 //Ajout de la configuration de la base de données; donc du DbContext
 builder.Services.AddDbContext<VoitureContext>(
     Options => Options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
+        builder.Configuration.GetConnectionString("VoitureDb"),
         new MySqlServerVersion(new Version(8, 0, 40))
     )
 );
