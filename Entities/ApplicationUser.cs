@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 
 public class ApplicationUser : IdentityUser
 {
-    //Definition des proprietes FirstName, LastName
+    //Definition des proprietes FirstName, LastName, puisce qu'ils ne sont pas par defaut gérés par Identity
     private String FirstName;
     private String LastName;
 
