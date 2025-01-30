@@ -28,6 +28,13 @@ public class ModeleController : ControllerBase
         return Ok(modeles);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAllModelesFromTable ()
+    {
+        var modeles = await _modeleService.GetAllModelesFromTable();
+        return Ok(modeles);
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateModele([FromBody] Modele modele)
     {

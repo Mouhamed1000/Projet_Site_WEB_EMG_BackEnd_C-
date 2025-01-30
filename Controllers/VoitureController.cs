@@ -62,4 +62,17 @@ public class VoitureController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetVoitureById(int id)
+    {
+        var voiture = await _voitureService.GetVoitureByIdAsync(id);
+    
+        if (voiture == null)
+        {
+            return NotFound("Voiture non trouvée");
+        }
+    
+        return Ok(voiture);
+    }
 }

@@ -112,5 +112,22 @@ public class VoitureService
                                         .ThenInclude(v => v.modele)
                                         .ToListAsync();
     }
+
+    //Méthode pour obtenir une voiture par son id
+    public async Task<Voiture> GetVoitureByIdAsync(int id)
+    {
+        //Une fois qu'un id est donné, on recherche l'id dans la table de la base de données
+        var voiture = await _context.Voitures.FindAsync(id);
+        if (voiture == null)
+        {
+            return null;
+        }
+
+        return await _context.Voitures
+            .Include(m => m.marque)
+            .ThenInclude(v => v.modele)
+            .FirstOrDefaultAsync(v => v.VoitId == id);
+    }
+
 }
 

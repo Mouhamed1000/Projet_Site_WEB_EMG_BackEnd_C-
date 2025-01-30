@@ -75,4 +75,10 @@ public class ModeleService
                                     . Where(m => m.MarqId == marqueId)
                                     .ToListAsync();
     }
+
+    //Méthode pour obtenir toutes les modeles de notre table Modele
+    public async Task<List<Modele>> GetAllModelesFromTable()
+    {
+        return await _context.Modeles.ToListAsync();
+    }
 }
