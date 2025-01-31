@@ -111,7 +111,7 @@ public class AuthenticationService
         if (user == null || !await userManager.CheckPasswordAsync(user, password))
             return null;
 
-        //On Récupère les rôles de l'utilisateur
+        //On récupère les rôles de l'utilisateur
         var roles = await userManager.GetRolesAsync(user);
 
         //On Vérifie si l'utilisateur a le bon rôle en fonction du profil
@@ -130,7 +130,7 @@ public class AuthenticationService
 
         //On Génére un token JWT avec les rôles inclus
         var token = await GenerateJwtToken(user, roles);
-        return new { Token = token };
+        return new { Token = token , Roles = roles };
     }
 
     internal async Task RegisterUser(object email)

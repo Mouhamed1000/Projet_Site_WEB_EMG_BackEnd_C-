@@ -6,6 +6,9 @@ public class RegisterModel
     private String Email;
     private String Password;
 
+    //Ajout de la propriété profil pour l'inscription
+    private String Profil;
+
     //Définition des getters et setters
     public String _firstName
     {
@@ -31,5 +34,10 @@ public class RegisterModel
         set { Password = value; }
     }
 
+    public String _profil
+    {
+        get { return Profil; }
+        set { Profil = value; }
+    }
 
 }
