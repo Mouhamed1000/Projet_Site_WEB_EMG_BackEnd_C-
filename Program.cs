@@ -8,6 +8,12 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure the HTTP request pipeline.
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenLocalhost(32000); 
+});
+
 // Configuration de JWT, on charge les donnnees de la variable d'environnement
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
