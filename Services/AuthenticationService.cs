@@ -1,26 +1,74 @@
-using Microsoft.AspNetCore.Http.HttpResults;
+using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 
 public class AuthenticationService
 {
-    private readonly UserManager<IdentityUser> userManager;
-    private readonly SignInManager<IdentityUser> signInManager;
+    //ApplicationUser fichier qu'on a créé pour personnalisé les champs de Identity et hérite de Identity
+    private readonly UserManager<ApplicationUser> userManager;
+    private readonly SignInManager<ApplicationUser> signInManager;
     
     //Création d'une propriété pour les rôles
     private readonly RoleManager<IdentityRole> roleManager;
 
+    private readonly IConfiguration configuration;
+
     //Definition du constructeur
-    public AuthenticationService(UserManager<IdentityUser> _userManager, SignInManager<IdentityUser> _signInManager, RoleManager<IdentityRole> _roleManager)
+    public AuthenticationService(UserManager<ApplicationUser> _userManager, SignInManager<ApplicationUser> _signInManager, RoleManager<IdentityRole> _roleManager, IConfiguration _configuration)
     {
         userManager = _userManager;
         signInManager = _signInManager;
         roleManager = _roleManager;
+        configuration = _configuration;
     }
 
-    //Methode pour inscrire un utilisateur
-    public async Task<IdentityResult> RegisterUser (string _firstName, string _lastName, string _email, string _password)
+    //Méthode pour générer le token JWT
+    private async Task<string> GenerateJwtToken(ApplicationUser user, IList<string> roles)
     {
-        //Creation d'un utilisateur
+        // On récupère les valeurs du Jwt depuis les variables d'environnement
+        var jwtSettings = configuration.GetSection("JwtSettings");
+        var key = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
+    
+        var claims = new List<Claim>
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim("id", user.Id),
+            new Claim(ClaimTypes.Email, user.Email)
+        };
+    
+        // Ajouter les rôles comme claims
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+    
+        var token = new JwtSecurityToken(
+            issuer: jwtSettings["Issuer"],
+            audience: jwtSettings["Audience"],
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(2),
+            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+        );
+    
+        return new JwtSecurityTokenHandler().WriteToken(token);
+}
+
+
+
+    //Methode pour inscrire un utilisateur en associant le jeton JWT
+    public async Task<object> RegisterUser(string _firstName, string _lastName, string _email, string _password)
+    {
+        // Vérifier si un utilisateur avec cet email existe déjà
+        var existingUser = await userManager.FindByEmailAsync(_email);
+        if (existingUser != null)
+        {
+            return new { message = "Cet email est déjà utilisé." };
+        }
+
+        // Créer un nouvel utilisateur
         var user = new ApplicationUser
         {
             firstName = _firstName,
@@ -29,15 +77,60 @@ public class AuthenticationService
             Email = _email
         };
 
-        return await userManager.CreateAsync(user, _password);
+        var result = await userManager.CreateAsync(user, _password);
+        if (!result.Succeeded)
+        {
+            return new { message = "Erreur lors de la création du compte", errors = result.Errors };
+        }
+
+        // Ajouter un rôle par défaut ici, "Personnel"
+        string defaultRole = "Personnel"; 
+
+        if (!await roleManager.RoleExistsAsync(defaultRole))
+        {
+            await roleManager.CreateAsync(new IdentityRole(defaultRole));
+        }
+
+        await userManager.AddToRoleAsync(user, defaultRole);
+
+        // Récupérer les rôles attribués
+        var roles = await userManager.GetRolesAsync(user);
+
+        // Générer le token JWT
+        var token = await GenerateJwtToken(user, roles);
+
+        return new { message = "Utilisateur créé avec succès", Token = token };
     }
 
-    // Méthode pour authentifier un utilisateur
-    public async Task<bool> LoginUser(string email, string password)
+
+    // Méthode pour authentifier un utilisateur en lui associant un jeton Jwt
+    public async Task<object> LoginUser(string email, string password, string profil)
     {
-        //Pour connecter un utilisateur, ici on envoie l'email et le password
-        var result = await signInManager.PasswordSignInAsync(email, password, false, false);
-        return result.Succeeded;
+        //On verifie l'email
+        var user = await userManager.FindByEmailAsync(email);
+        if (user == null || !await userManager.CheckPasswordAsync(user, password))
+            return null;
+
+        //On Récupère les rôles de l'utilisateur
+        var roles = await userManager.GetRolesAsync(user);
+
+        //On Vérifie si l'utilisateur a le bon rôle en fonction du profil
+        bool isAdmin = roles.Contains("Admin");
+        bool isPersonnel = roles.Contains("Personnel");
+
+        if (profil == "admin" && !isAdmin)
+        {
+            return null; // L'utilisateur n'est pas administrateur
+        }
+
+        if (profil == "personnel" && !isPersonnel)
+        {
+            return null; // L'utilisateur n'est pas personnel
+        }
+
+        //On Génére un token JWT avec les rôles inclus
+        var token = await GenerateJwtToken(user, roles);
+        return new { Token = token };
     }
 
     internal async Task RegisterUser(object email)
@@ -45,15 +138,22 @@ public class AuthenticationService
         throw new NotImplementedException();
     }
 
-    //Méthode pour créer un administrateur
-    public async Task<IdentityResult> RegisterAdmin(string _firstName, string _lastName, string _email, string _password)
+    //Méthode pour créer un administrateur en lui associant un jeton JWT
+    public async Task<object> RegisterAdmin(string _firstName, string _lastName, string _email, string _password)
     {
-        //On Vérifie s'il existe déjà un administrateur
+        // Vérifier si un utilisateur avec cet email existe déjà avanr de poursuivre
+        var existingUser = await userManager.FindByEmailAsync(_email);
+        if (existingUser != null)
+        {
+            return new { message = "Cet email est déjà utilisé." };
+        }
+
+        //On Vérifie après s'il existe déjà un administrateur
         var admins = await userManager.GetUsersInRoleAsync("Admin");
 
         if (admins.Count > 0)
         {
-            return IdentityResult.Failed(new IdentityError { Description = "Un compte administrateur existe déjà." });
+            return new { message = "Un compte administrateur existe déjà."};
         }
 
         //On vérifie si le rôle Admin existe
@@ -74,12 +174,18 @@ public class AuthenticationService
 
         if (!result.Succeeded)
         {
-            return result; 
+            return new { message = "Erreur lors de la création du compte", errors = result.Errors }; 
         }
 
-        //On Assigner le rôle "Admin" à cet utilisateur
+        //On va assigner le rôle "Admin" à cet utilisateur si l'opération se termine bien
         await userManager.AddToRoleAsync(adminUser, "Admin");
 
-        return IdentityResult.Success;    
+         // Récupérer les rôles attribués
+        var roles = await userManager.GetRolesAsync(adminUser);
+    
+        //On crée un token pour l'associer à cet utilisateur admin
+        var token = await GenerateJwtToken(adminUser, roles);
+    
+        return new { message = "Compte administrateur créé avec succès", Token = token };
     }
 }

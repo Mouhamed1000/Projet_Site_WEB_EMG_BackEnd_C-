@@ -18,21 +18,22 @@ public class AuthenticationController : ControllerBase
     {
         var result = await _authService.RegisterUser(model._firstName, model._lastName, model._email, model._password);
 
-        if (result.Succeeded)
-            return Ok(new { message = "Utilisateur créé avec succès" });
+        if (result is string errorMessage)
+            return BadRequest(new { message = errorMessage });
 
-        return BadRequest(result.Errors);
+        return Ok(result);
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginModel model)
     {
-        var success = await _authService.LoginUser(model._email, model._password);
+        var success = await _authService.LoginUser(model._email, model._password, model._profil);
 
-        if (success)
-            return Ok(new { message = "Connexion réussie" });
+        if (success == null)
+            return Unauthorized(new { message = "Email ou mot de passe incorrect"}); 
 
-        return Unauthorized(new { message = "Email ou mot de passe incorrect"});    
+        return Ok(new { message = "Connexion réussie" });
+           
     }
 
     [HttpPost("register-admin")]
@@ -40,9 +41,9 @@ public class AuthenticationController : ControllerBase
     {
         var result = await _authService.RegisterAdmin(model._firstName, model._lastName, model._email, model._password);
 
-        if (result.Succeeded)
-            return Ok(new { message = "Compte administrateur créé avec succès" });
+        if (result is string errorMessage)
+            return BadRequest(new { message = errorMessage });
 
-        return BadRequest(result.Errors);
+        return Ok(result);
     }
 }

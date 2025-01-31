@@ -4,6 +4,9 @@ public class LoginModel
     private String Email;
     private String Password;
 
+    //Il y'a un champ rôle car tous nos utilisateurs n'ont pas les mêmes droits
+    private string Profil;
+
     //Définition des getters et setters
     public String _email
     {
@@ -15,5 +18,11 @@ public class LoginModel
     {
         get { return Password; }
         set { Password = value; }
+    }
+
+    public String _profil
+    {
+        get { return Profil; }
+        set { Profil = value; }
     }
 }
