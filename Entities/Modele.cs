@@ -2,7 +2,7 @@ namespace EMG_MED1000_BACKEND.Entities
 {
     public class Modele
     {
-        private int ModeleId { get; set; }
+        private int ModeleId;
         private String NomModele;
         private DateTime AnneeModele;
 
@@ -12,6 +12,9 @@ namespace EMG_MED1000_BACKEND.Entities
 
         //Propriété de navigation 
         public Marque Marque { get; set; }
+
+        // Constructeur par défaut sans paramètres pour EF Core
+        public Modele() {}
 
         //Déclaration d'un constructeur de la classe pour y initaliser notre objet Modele
         public Modele (String _NomModele, DateTime _AnneeModele, int marqueId)
@@ -23,6 +26,12 @@ namespace EMG_MED1000_BACKEND.Entities
 
 
         //Définition des getters et setters
+        public int ModelId
+        {
+            get { return ModeleId; }
+            set { ModeleId = value; }
+        }
+
         public String nomModele
         {
             get { return NomModele; }
@@ -40,6 +49,8 @@ namespace EMG_MED1000_BACKEND.Entities
             get { return MarqueId; }
             set { MarqueId = value; }
         }
+
+
 
     }
 }

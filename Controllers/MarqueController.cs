@@ -1,4 +1,5 @@
 using EMG_MED1000_BACKEND.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -33,6 +34,8 @@ public class MarqueController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    //Autorisation a Admin
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateMarque(int id, [FromBody] Marque marque)
     {
         if (marque == null || id <=0)
@@ -57,6 +60,20 @@ public class MarqueController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetMarqueById(int id)
+    {
+        if (id <= 0)
+            return BadRequest("L'ID est invalide");
+
+        var marque = await _marqueService.GetMarqueById(id);
+
+        if (marque == null)
+            return NotFound($"Aucune marque trouvée avec l'ID {id}");
+
+        return Ok(marque); 
     }
 
 }

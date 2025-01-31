@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/EMG_Med1000_backend.props" />
+</Project>

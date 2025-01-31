@@ -15,8 +15,33 @@ public class MarqueService
     //Méthode pour créer une marque
     public async Task<Marque> CreateMarque(String _NomMarque, List<Modele> _Modeles)
     {
-        //On utilise le constructeur Marque(...) pour initialiser notre objet Marque
-        var marque = new Marque(_NomMarque, _Modeles);
+        // On verifie si une marque avec ce nom existe déjà
+        var existingMarque = await _context.Marques
+                                .FirstOrDefaultAsync(m => m.NomMarq == _NomMarque);
+
+        if (existingMarque != null)
+        {
+            throw new Exception("Une marque avec ce nom existe déjà.");
+        }
+
+        //On Vérifie l'unicité des modèles associés
+        foreach (var modele in _Modeles)
+        {
+            var existingModele = await _context.Modeles
+                .FirstOrDefaultAsync(m => m.nomModele == modele.nomModele);
+
+            if (existingModele != null)
+            {
+                throw new Exception($"Un modèle avec le nom {modele.nomModele} existe déjà.");
+            }
+        }
+
+        //Création d'un objet Marque sans utiliser le constructeur
+        var marque = new Marque()
+        {
+            NomMarq = _NomMarque,
+            ListModele = _Modeles ?? new List<Modele>()
+        };
 
         //Ajout de l'entité marque au _context
         _context.Marques.Add(marque);
@@ -72,6 +97,14 @@ public class MarqueService
     public async Task<List<Marque>> GetAllMarquesAsync()
     {
         return await _context.Marques.ToListAsync();
+    }
+
+    //Méthode pour obtenir la marque par Id
+    public async Task<Marque> GetMarqueById(int id)
+    {
+        return await _context.Marques
+            .Include(m => m.ListModele) 
+            .FirstOrDefaultAsync(m => m.MarqId == id);
     }
    
 }

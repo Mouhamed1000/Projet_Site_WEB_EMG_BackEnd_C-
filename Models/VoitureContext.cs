@@ -31,5 +31,37 @@ namespace EMG_MED1000_BACKEND.Models
 
             base.OnConfiguring(optionsBuilder);
         }
+
+        //Implementation des contraintes
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Marque>()
+            .HasKey(m => m.MarqId);
+
+            // On s'assure que Nom de la Marque est unique dans la table Marques
+            modelBuilder.Entity<Marque>()
+                .HasIndex(m => m.NomMarq)
+                .IsUnique();
+
+            modelBuilder.Entity<Modele>()
+                .HasKey(v => v.ModelId);
+
+            modelBuilder.Entity<Voiture>()
+                .HasKey(l => l.VoitId);
+
+            //On s'assure que NomModele est unique dans la table Modeles
+            modelBuilder.Entity<Modele>()
+                .HasIndex(m => m.nomModele)
+                .IsUnique();
+
+            // Configuration de la relation entre Marque et Modele : Une marque peut avoir plusieurs modèles
+            modelBuilder.Entity<Marque>()
+                .HasMany(m => m.ListModele)
+                .WithOne(m => m.Marque)
+                .HasForeignKey(m => m.MarqId)
+                .OnDelete(DeleteBehavior.Cascade); 
+        }
     } 
 }

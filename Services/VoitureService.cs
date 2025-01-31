@@ -127,6 +127,7 @@ public class VoitureService
             .Include(m => m.marque)
             .ThenInclude(v => v.modele)
             .FirstOrDefaultAsync(v => v.VoitId == id);
+            
     }
 
 }

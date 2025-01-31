@@ -17,6 +17,9 @@ namespace EMG_MED1000_BACKEND.Entities
         //Propriétés de navigation
         public Marque marque { get; set; } 
 
+        //Déclaration d'un constructeur sans paramètres
+        public Voiture() {}
+
         //Déclaration d'un constructeur de la classe pour y initaliser notre objet Voiture
         public Voiture(StatutVoiture _statut, String _photo, String _description, DateTime _AnneeVoiture, int _MarqueId)
         {

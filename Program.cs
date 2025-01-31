@@ -49,7 +49,17 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
     };
+
 });
+
+// Autorisation avec rôle "Admin"
+builder.Services.AddAuthorization(options =>
+{
+
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+
+});
+
 
 //Ajout d'Identity avec ApplicationDbContext
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

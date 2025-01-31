@@ -81,4 +81,19 @@ public class ModeleService
     {
         return await _context.Modeles.ToListAsync();
     }
+
+
+    //Méthode pour récupérer un modèle par son ID
+    public async Task<Modele> GetModeleByIdAsync(int id)
+    {
+        //Recherche du modèle par ID dans la base de données
+        var modele = await _context.Modeles.FindAsync(id);
+
+        if (modele == null)
+        {
+            return null;
+        }
+
+        return modele;
+    }
 }

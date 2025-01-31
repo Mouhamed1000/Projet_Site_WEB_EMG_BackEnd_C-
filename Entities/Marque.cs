@@ -11,11 +11,17 @@ namespace EMG_MED1000_BACKEND.Entities
         //Propriété de navigation
         public Modele modele { get; set; }
 
-        //Déclaration d'un constructeur de la classe pour y initaliser notre objet Marque
-        public Marque(String _NomMarque, List<Modele> _Modeles)
+        //Déclaration d'un constructeur sans paramètre de la classe pour y initaliser notre objet Marque
+        public Marque()
         {
-            NomMarque = _NomMarque;
-            Modeles = _Modeles ?? new List<Modele>();
+            Modeles = new List<Modele>();
+        }
+
+        // Constructeur avec paramètre 
+        public Marque(string nomMarque)
+        {
+            NomMarque = nomMarque;
+            Modeles = new List<Modele>(); 
         }
 
         //Déclaration des getters et setters

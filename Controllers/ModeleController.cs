@@ -1,4 +1,5 @@
 using EMG_MED1000_BACKEND.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -45,6 +46,7 @@ public class ModeleController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateModele(int id, [FromBody] Modele modele)
     {
         if (modele == null || id <=0)
@@ -68,5 +70,21 @@ public class ModeleController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    // Méthode GET pour récupérer un modèle par son ID
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetModeleById(int id)
+    {
+        // Appel à la méthode du service pour récupérer le modèle
+        var modele = await _modeleService.GetModeleByIdAsync(id);
+
+        if (modele == null)
+        {
+            // Si le modèle n'est pas trouvé, retourner NotFound
+            return NotFound($"Aucun modèle trouvé avec l'ID {id}");
+        }
+
+        return Ok(modele);
     }
 }
