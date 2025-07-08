@@ -97,6 +97,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+
 var app = builder.Build();
 
 app.UseCors("AllowReactApp");
@@ -110,6 +111,14 @@ app. UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+// app.UseEndpoints(endpoints =>
+// {
+//     foreach (var endpoint in endpoints.DataSources.SelectMany(ds => ds.Endpoints))
+//     {
+//         Console.WriteLine(endpoint.DisplayName);
+//     }
+// });
 
 app.MapControllers();
     

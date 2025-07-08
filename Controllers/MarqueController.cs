@@ -27,6 +27,11 @@ public class MarqueController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateMarque([FromBody] Marque marque)
     {
+        if (marque == null)
+        {
+            return BadRequest("Le corps de la requête est vide.");
+        }
+
         //Création de la marque via notre service en lui fournissant les différents paramètres
         var createdMarque = await _marqueService.CreateMarque(marque.NomMarq, marque.ListModele);
 

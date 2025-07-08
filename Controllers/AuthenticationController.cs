@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/auth")]
-
+[Route("api/[controller]")]
 public class AuthenticationController : ControllerBase
 {
     private readonly AuthenticationService _authService;

@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc;
 
 public class AuthenticationService
 {
@@ -29,7 +30,9 @@ public class AuthenticationService
     {
         // On récupère les valeurs du Jwt depuis les variables d'environnement
         var jwtSettings = configuration.GetSection("JwtSettings");
-        var key = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
+
+        var key = Convert.ToBase64String(Encoding.UTF8.GetBytes(jwtSettings["Secret"]));
+        var key2 = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
     
         var claims = new List<Claim>
         {
@@ -50,7 +53,7 @@ public class AuthenticationService
             audience: jwtSettings["Audience"],
             claims: claims,
             expires: DateTime.UtcNow.AddHours(2),
-            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key2), SecurityAlgorithms.HmacSha256)
         );
     
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -80,7 +83,8 @@ public class AuthenticationService
         var result = await userManager.CreateAsync(user, _password);
         if (!result.Succeeded)
         {
-            return new { message = "Erreur lors de la création du compte", errors = result.Errors };
+            var errorMessages = result.Errors.Select(e => e.Description).ToArray();
+            return new JsonResult(new { message = "Erreur lors de la création du compte", errors = errorMessages });
         }
 
         // Ajouter un rôle par défaut ici, "Personnel"
@@ -109,7 +113,7 @@ public class AuthenticationService
         //On verifie l'email
         var user = await userManager.FindByEmailAsync(email);
         if (user == null || !await userManager.CheckPasswordAsync(user, password))
-            return null;
+            return new JsonResult(new { message = "Email ou mot de passe incorrect" });
 
         //On récupère les rôles de l'utilisateur
         var roles = await userManager.GetRolesAsync(user);
@@ -120,12 +124,12 @@ public class AuthenticationService
 
         if (profil == "admin" && !isAdmin)
         {
-            return null; // L'utilisateur n'est pas administrateur
+            return new JsonResult(new { message = "L'utilisateur n'est pas administrateur" });// L'utilisateur n'est pas administrateur
         }
 
         if (profil == "personnel" && !isPersonnel)
         {
-            return null; // L'utilisateur n'est pas personnel
+            return new JsonResult(new { message = "L'utilisateur n'est pas personnel" });// L'utilisateur n'est pas personnel
         }
 
         //On Génére un token JWT avec les rôles inclus
