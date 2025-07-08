@@ -9,7 +9,7 @@
 # Si c'est bon, faites : dotnet ef database update --context VoitureContext  
 # Puis faites : dotnet ef database update --context ApplicationDbContext
 # Ensuite, faites dotnet run  
-# Le port que j'ai configuré est 5000 , assurez-vous que ce port soit libre  
+# Le port que j'ai configuré est 32000 , assurez-vous que ce port soit libre  
 # Dans le cas contraire, essayer de le liberer, soit en redémarrant la machine ou en faisant kill du processus qui l'utilise  
 
 
